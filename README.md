@@ -1,10 +1,26 @@
-# quickstart-deploy-aspnet-core-app-service
+# Azure Application Insights Demo App
 
-Quickstart-deploy-aspnet-core-app-service is a demo project showcasing what you can get your application up on Azure using [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)(azd).
+This is a demo project showcasing integration of a Blazor web app with Azure App Insights, to support the talk "You Use App Insights, Right?  Right?" at the Melbourne Global Azure Bootcamp 2025. 
 
 ## Prerequisites
 
-The following prerequisites are required to use this application.  Please ensure that you have them all installed locally.
+Running this repo locally requires the .NET 9 SDK to be installed.
+
+Currently this repo does NOT include the creation of the actual Application Insights resources - I'll add that "soon"!
+
+To run locally, you can plug your App Insights Connection String in by setting a secret, by running the following from the `src` folder:
+
+```
+dotnet user-secrets set ApplicationInsights:ConnectionString <connectionstring>
+```
+
+You should then be able to run it locally using `dotnet run`.
+
+### Deploying to Azure
+
+As noted above, currently this repo does NOT include the creation of the actual Application Insights resources - I'll add that "soon"!
+
+The following prerequisites are required to deploy this application to Azure.  Please ensure that you have them all installed locally.
 
 - [Azure Developer CLI](https://aka.ms/azure-dev/install)
   - Windows:
