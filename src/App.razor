@@ -1,0 +1,34 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+    private string? _lastUri;
+
+    protected override void OnInitialized()
+    {
+        _lastUri = Navigation.Uri;
+        Navigation.LocationChanged += async (sender, args) =>
+        {
+            var uri = args.Location;
+            if (uri != _lastUri)
+            {
+                _lastUri = uri;
+                var pageName = Navigation.ToBaseRelativePath(uri);
+                await JS.InvokeVoidAsync("trackPageView", pageName);
+            }
+        };
+    }
+}

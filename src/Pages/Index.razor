@@ -1,0 +1,29 @@
+﻿@page "/"
+
+<h1>App Insights Demo</h1>
+
+<p>
+    <button class="btn btn-primary" @onclick="TriggerError">Trigger Exception</button>
+    <button class="btn btn-secondary" @onclick="LogCustomEvent">Log Custom Event</button>
+</p>
+
+@code {
+    [Inject] private ILogger<Index> Logger { get; set; } = default!;
+
+    void TriggerError()
+    {
+        try
+        {
+            throw new InvalidOperationException("Demo exception for App Insights");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "An error occurred!");
+        }
+    }
+
+    void LogCustomEvent()
+    {
+        Logger.LogInformation("Index: Custom Event triggered");
+    }
+}

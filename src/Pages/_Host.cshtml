@@ -1,0 +1,62 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web
+@namespace AppInsightsDemo.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{
+    var appInsightsConnectionString = 
+        Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING") 
+        ?? Configuration["ApplicationInsights:ConnectionString"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="AppInsightsDemo.styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+
+    <script type="text/javascript">
+        var appInsights=window.appInsights||function(config){
+            function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.src||"https://js.monitor.azure.com/scripts/b/ai.2.min.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.queue=[],i=["trackEvent","trackPageView","trackException","trackTrace","trackDependencyData","setAuthenticatedUserContext","clearAuthenticatedUserContext","startTrackEvent","stopTrackEvent","startTrackPage","stopTrackPage"],f=0;f<i.length;f++)r(i[f]);return t
+        }({
+            connectionString: "@appInsightsConnectionString"
+        });
+
+        window.appInsights=appInsights;
+        appInsights.trackPageView(); // initial page load
+
+        window.trackPageView = function (uri) {
+            if (window.appInsights) {
+            appInsights.trackPageView({ name: uri });
+            console.log("Tracked page view: " + uri);
+            }
+        };
+    </script>
+
+</head>
+<body>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+    
+</body>
+</html>
